@@ -3,5 +3,3 @@ const hola = (nombre) => {
 };
 
 hola("César");
-
-//Otro cambio
