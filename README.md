@@ -1,1 +1,3 @@
-# fsd3
+# Curso FSD3 Senpai
+
+Este repositorio contiene ejercicios
