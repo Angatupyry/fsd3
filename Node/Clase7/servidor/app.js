@@ -1,35 +1,33 @@
 const express = require("express");
 const fetch = require("node-fetch");
+const cors = require("cors");
 
 const app = express();
+
+app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("Hola, Mundo");
+  return res.send("Hola, Mundo");
 });
 
-app.get("/ping", (req, res) => {
-  const fullName = req.query.name + "" + req.query.lastName;
+app.get("/ping", function (req, res) {
+  const fullName = req.query.name + " " + req.query.lastName;
 
-  return res.send(`Nombre ${fullName}`);
+  return res.send("pong, fullName is " + fullName);
 });
 
-app.get("/user/:usuarioId", async (req, res, next) => {
-  try {
-    const userId = req.params.usuarioId;
+app.get("/user/:userId", async function (req, res) {
+  const userId = req.params.userId;
 
-    const fetchResponse = await fetch(`https://api.github.com/users/${userId}`);
+  const fetchResponse = await fetch(`https://api.github.com/users/${userId}`);
+  const response = await fetchResponse.json();
 
-    const response = await fetchResponse.json();
-
-    return res.send({ success: true, user: response });
-  } catch (error) {
-    return next(error);
-  }
+  return res.send({ sucess: true, user: response });
 });
 
-app.get("/repositorios/:userId", async (req, res, next) => {
+app.get("/repositorios/:userId", async function (req, res) {
   try {
     const userId = req.params.userId;
 
@@ -38,20 +36,31 @@ app.get("/repositorios/:userId", async (req, res, next) => {
 
     const reposUrl = user.repos_url;
 
-    const fetchRepos = await fetch(reposUrl);
+    if (user.public_repos === 0) {
+      res.send({ sucess: false, repositorios: [] });
+      return;
+    }
 
+    const fetchRepos = await fetch(reposUrl);
     const repos = await fetchRepos.json();
 
-    const repoName = [];
+    const repoNames = [];
 
-    repos.forEach((r) => {
-      repoName.push(r.name);
+    repos.forEach((repo) => {
+      console.log(repo.name);
+      repoNames.push(repo.name);
     });
 
-    return res.send({ success: true, repositorios: repoName });
-  } catch (error) {
-    return next(error);
+    return res.send({ sucess: true, repositorios: repoNames });
+  } catch (exception) {
+    return res.send({
+      sucess: false,
+      mensaje: "Ocurrió un error",
+      error: exception,
+    });
   }
 });
 
-app.listen(PORT, () => console.log(`Escuchando en el puerto ${PORT}`));
+app.listen(PORT, function () {
+  console.log("El servidor quedo corriendo en el puerto " + PORT);
+});

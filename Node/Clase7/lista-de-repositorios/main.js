@@ -30,6 +30,24 @@ botonSearch.addEventListener("click", function () {
     method: "GET",
   });
 
+  const algo = async () => {
+    try {
+      const promesa = await fetch(
+        `http://localhost:3000/repositorios/${githubUser}`,
+        {
+          method: "GET",
+        }
+      );
+      console.log(promesa);
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log(promesa);
+  };
+
+  algo();
+
   promesa
     .then(function (response) {
       return response.json();
