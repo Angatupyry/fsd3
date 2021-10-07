@@ -26,14 +26,14 @@ botonSearch.addEventListener("click", function () {
 
   // Llamar al servidor, y obtener la información del Github del user ingresado
   // const promesa = fetch(`https://vercel.tuRepositorio.sh:4000/repositorios/${githubUser}`, {
-  const promesa = fetch(`http://localhost:3000/repositorios/${githubUser}`, {
+  const promesa = fetch(`http://localhost:8080/repositorios/${githubUser}`, {
     method: "GET",
   });
 
   const algo = async () => {
     try {
       const promesa = await fetch(
-        `http://localhost:3000/repositorios/${githubUser}`,
+        `http://localhost:8080/repositorios/${githubUser}`,
         {
           method: "GET",
         }

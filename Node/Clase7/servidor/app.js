@@ -4,15 +4,17 @@ const cors = require("cors");
 
 const app = express();
 
+// Solo en desarrollo
 app.use(cors());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
-app.get("/", (req, res) => {
-  return res.send("Hola, Mundo");
+app.get("/", function (req, res) {
+  return res.send("Hola Mundo");
 });
 
 app.get("/ping", function (req, res) {
+  // los query params llegan cuando invocan la ruta asi /ping?name=Juan&lastName=Perez
   const fullName = req.query.name + " " + req.query.lastName;
 
   return res.send("pong, fullName is " + fullName);
@@ -24,6 +26,7 @@ app.get("/user/:userId", async function (req, res) {
   const fetchResponse = await fetch(`https://api.github.com/users/${userId}`);
   const response = await fetchResponse.json();
 
+  // res.send("Llamaron con userId: " + JSON.stringify(response));
   return res.send({ sucess: true, user: response });
 });
 
@@ -33,6 +36,8 @@ app.get("/repositorios/:userId", async function (req, res) {
 
     const fetchResponse = await fetch(`https://api.github.com/users/${userId}`);
     const user = await fetchResponse.json();
+
+    console.log("Respuesta user: ", user);
 
     const reposUrl = user.repos_url;
 
