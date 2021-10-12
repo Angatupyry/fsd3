@@ -7,7 +7,7 @@ router.get("/", (req, res, next) => {
 
 router.post("/", (req, res, next) => {
   const newUser = req.body;
-  if (newUser.id && newUser.id.name && newUser.age) {
+  if (newUser.id && newUser.name && newUser.age) {
     users.push(newUser);
     res.send({ success: true, user: newUser });
   } else {
