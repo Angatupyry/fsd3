@@ -4,6 +4,7 @@ const path = require("path");
 
 const userRoutes = require("./routes/user");
 const productsRoutes = require("./routes/products");
+const publicRoutes = require("./routes/public");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/public", publicRoutes);
 //app.use("/product", productsRoutes);
 
 app.listen(3000, function () {
