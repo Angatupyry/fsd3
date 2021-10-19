@@ -23,10 +23,8 @@ botonAgregar.addEventListener("click", function () {
       prioridad: listaDeBoton.value,
     }),
   })
-    .then(function (respuesta) {
-      return respuesta.json();
-    })
-    .then(function (respuestaJSON) {
+    .then((respuesta) => respuesta.json())
+    .then((respuestaJSON) => {
       const tareaNueva = respuestaJSON.tareaNueva;
 
       crearNuevaTareaHTML(
@@ -37,19 +35,18 @@ botonAgregar.addEventListener("click", function () {
     });
 });
 
-listaDeTareasUL.addEventListener("click", function (evento) {
-  evento.target.remove();
-});
+// listaDeTareasUL.addEventListener("click", function (evento) {
+//   evento.target.remove();
+// });
 
 /* Función para cargar tareas desde el servidor */
-function cargarTareas() {
+const cargarTareas = () => {
   fetch("http://localhost:3000/tareas", {
     method: "GET",
   })
-    .then(function (respuesta) {
-      return respuesta.json();
-    })
-    .then(function (respuestaJSON) {
+    .then((respuesta) => respuesta.json())
+    .then((respuestaJSON) => {
+      console.log(respuestaJSON);
       const tareas = respuestaJSON.tareas;
       const cantidadDeTareas = tareas.length;
 
@@ -61,6 +58,6 @@ function cargarTareas() {
         );
       }
     });
-}
+};
 
 cargarTareas();
