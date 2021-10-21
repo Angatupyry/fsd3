@@ -5,7 +5,7 @@ const cors = require("cors");
 const authRouter = require("./routes/auth");
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());

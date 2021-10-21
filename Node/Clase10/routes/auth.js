@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
+const { TOKEN_SECRET, verifyToken } = require("../middlewares/jwt-validate");
+
 router.get("/", (req, res) => {
   res.json({ success: true });
 });
@@ -47,6 +49,40 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res, next) => {
+  try {
+    const user = usuarios.find((u) => u.mail === req.body.mail);
+
+    if (!user) {
+      return res.status(400).json({ error: "Usuario no encontrado" });
+    }
+
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+
+    if (!validPassword) {
+      return res.status(400).json({ error: "Contraseña no válida" });
+    }
+
+    const token = jwt.sign(
+      {
+        name: user.name,
+        mail: user.mail,
+      },
+      TOKEN_SECRET
+    );
+
+    return res.json({ error: null, data: "Login exitoso", token });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get("/usuarios", verifyToken, (req, res) => {
+  return res.json({ error: null, usuarios });
+});
 module.exports = router;
 
 const usuarios = [
